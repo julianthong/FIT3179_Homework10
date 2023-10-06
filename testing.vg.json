@@ -1,0 +1,143 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": 300,
+  "height": 200,
+  "title": "GDP per captia vs Access to electricity (2015)",
+  "data": {
+    "url": "data/energy-use-per-capita-vs-gdp-per-capita.csv"
+  },
+  "encoding": {
+    "x": {
+      "field": "GDP per capita",
+      "type": "quantitative",
+      "title": "GDP per capita (USD)",
+      "axis": { "tickCount": 5 },
+      "scale": { "type": "log", "domain": [18000, 80000] }
+    },
+    "y": {
+      "field": "Energy use (kg of oil equivalent per capita)",
+      "type": "quantitative",
+      "axis": { "tickCount": 5 }
+    }
+  },
+  "layer": [
+    {
+      "selection": {
+        "continent_highlight": {
+          "type": "multi",
+          "fields": ["Continent"],
+          "bind": "legend"
+        }
+      },
+
+      "mark": "circle",
+      "encoding": {
+        "color": {
+          "field": "Continent",
+          "type": "nominal"
+        },
+        "opacity": {
+            "condition": {"selection": "continent_highlight", "value": 0.6},
+            "value": 0.2},
+        "size": {
+          "field": "Population (historical estimates)",
+          "type": "quantitative",
+          "scale": {
+            "type": "threshold",
+            "domain": [1000000, 10000000, 50000000, 100000000],
+            "range": [10, 50, 150, 200, 300]
+          },
+          "legend": { "format": ".1s" }
+        },
+
+        "tooltip": [
+          { "field": "Country", "type": "nominal" },
+          { "field": "Continent", "type": "nominal" },
+          { "field": "GDP per capita", "type": "quantitative" },
+          {
+            "field": "Energy use (kg of oil equivalent per capita)",
+            "type": "quantitative"
+          },
+          {
+            "field": "Population (historical estimates)",
+            "type": "quantitative"
+          }
+        ]
+      }
+    },
+    {
+      "mark": {
+        "type": "text",
+        "align": "center",
+        "baseline": "line-bottom",
+        "dx": 0,
+        "dy": -5,
+        "fontSize": 11.5,
+        "fontStyle": "italic"
+      },
+      "encoding": {
+        "text": { "field": "Country", "type": "nominal" },
+        "color": { "value": "black" },
+        "opacity": {
+          "condition": {
+            "test": "datum['Country'] == 'United States' || datum['Country'] == 'Mexico' || datum['Country'] == 'Canada'",
+            "value": 1
+          },
+          "value": 0
+        },
+        "tooltip": [
+          { "field": "Country", "type": "nominal" },
+          { "field": "Continent", "type": "nominal" },
+          { "field": "GDP per capita", "type": "quantitative" },
+          {
+            "field": "Energy use (kg of oil equivalent per capita)",
+            "type": "quantitative"
+          },
+          {
+            "field": "Population (historical estimates)",
+            "type": "quantitative"
+          }
+        ]
+      }
+    },
+
+    {
+      "mark": {
+        "type": "text",
+        "align": "center",
+        "dx": 0,
+        "dy": 10,
+        "baseline": "middle",
+        "fontSize": 11.5,
+        "fontStyle": "italic",
+        "lineBreak": "\n"
+      },
+      "encoding": {
+        
+        "text": { "value": "Iceland has the highest consumption \n due to metal manudacturing" },
+        "color": { "value": "black" },
+        "opacity": {
+          "condition": {
+            "test": "datum['Country'] == 'Iceland'",
+            "value": 1
+          },
+          "value": 0
+        },
+        "tooltip": [
+          { "field": "Country", "type": "nominal" },
+          { "field": "Continent", "type": "nominal" },
+          { "field": "GDP per capita", "type": "quantitative" },
+          {
+            "field": "Energy use (kg of oil equivalent per capita)",
+            "type": "quantitative"
+          },
+          {
+            "field": "Population (historical estimates)",
+            "type": "quantitative"
+          }
+        ]
+      }
+    }
+    
+  ]
+}
